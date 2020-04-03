@@ -9,6 +9,19 @@
 #include "enet/time.h"
 #include "enet/enet.h"
 
+
+/* CODE EDITED BY ME - 30.03.20 */
+#ifdef ENET_DEBUG
+inline void enet_error(const char* msg)
+{
+    printf(msg);
+    printf("\n");
+}
+#endif
+/* EDIT END */
+
+
+
 static size_t commandSizes [ENET_PROTOCOL_COMMAND_COUNT] =
 {
     0,
@@ -852,7 +865,6 @@ enet_protocol_handle_acknowledge (ENetHost * host, ENetEvent * event, ENetPeer *
       return 0;
 
     roundTripTime = ENET_TIME_DIFFERENCE (host -> serviceTime, receivedSentTime);
-    roundTripTime = ENET_MAX (roundTripTime, 1);
 
     enet_peer_throttle (peer, roundTripTime);
 
@@ -1831,7 +1843,7 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
 
         case -1:
 #ifdef ENET_DEBUG
-            perror ("Error dispatching incoming packets");
+            enet_error ("Error dispatching incoming packets");
 #endif
 
             return -1;
@@ -1857,7 +1869,7 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
 
        case -1:
 #ifdef ENET_DEBUG
-          perror ("Error sending outgoing packets");
+          enet_error ("Error sending outgoing packets");
 #endif
 
           return -1;
@@ -1873,7 +1885,7 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
 
        case -1:
 #ifdef ENET_DEBUG
-          perror ("Error receiving incoming packets");
+          enet_error ("Error receiving incoming packets");
 #endif
 
           return -1;
@@ -1889,7 +1901,7 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
 
        case -1:
 #ifdef ENET_DEBUG
-          perror ("Error sending outgoing packets");
+          enet_error ("Error sending outgoing packets");
 #endif
 
           return -1;
@@ -1907,7 +1919,7 @@ enet_host_service (ENetHost * host, ENetEvent * event, enet_uint32 timeout)
 
           case -1:
 #ifdef ENET_DEBUG
-             perror ("Error dispatching incoming packets");
+             enet_error ("Error dispatching incoming packets");
 #endif
 
              return -1;
